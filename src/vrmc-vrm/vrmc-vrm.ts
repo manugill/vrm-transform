@@ -47,10 +47,10 @@ export class VRMCVrm extends Extension {
 	public write(context: WriterContext): this {
 		const jsonDoc = context.jsonDoc;
 
-		// FIXME: Assert that there is only a single VRM property.
-		if (this.properties.size === 0) return this;
+		// FIXME: How to handle/detect duplicate VRM or removal from document?
+		const vrm = this.listProperties().find(prop => prop instanceof Vrm);
+		if (!vrm) return this;
 
-		const vrm = [...this.properties][0] as Vrm;
 		const vrmDef = {
 			specVersion: vrm.getSpecVersion(),
 			meta: vrm.getMeta()!.write(context),
