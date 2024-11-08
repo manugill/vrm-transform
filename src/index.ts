@@ -3,10 +3,11 @@ import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
+import { VRMCSpringBone } from './vrmc-springbone';
 
 // Configure I/O.
 const io = new NodeIO()
-    .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCNodeConstraint]);
+    .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCNodeConstraint, VRMCSpringBone]);
 
 // Read from URL.
 const document = await io.read('examples/avatar.vrm');

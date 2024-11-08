@@ -5,10 +5,10 @@ interface INodeConstraint extends IProperty {
     specVersion: SpecVersion;
     source: Node;
     weight: number;
-    rollAxis: RollAxis|null;
-    aimAxis: AimAxis|null;
     // Roll constraint
+    rollAxis: RollAxis|null;
     // Aim constraint
+    aimAxis: AimAxis|null;
 }
 
 type SpecVersion = '1.0'|'1.0-beta';
