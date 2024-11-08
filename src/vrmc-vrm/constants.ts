@@ -1,0 +1,1 @@
+export const VRMC_VRM = 'VRMC_vrm';
