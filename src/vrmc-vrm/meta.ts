@@ -1,5 +1,5 @@
 import { ExtensionProperty, ReaderContext, Texture, WriterContext, type IProperty, type Nullable } from "@gltf-transform/core";
-import { VRMC_VRM } from "./constants";
+import { VRMC_VRM } from "../constants";
 import type { VRMCVRM } from "@pixiv/types-vrmc-vrm-1.0";
 
 interface IMeta extends IProperty {

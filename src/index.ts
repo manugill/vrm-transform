@@ -1,11 +1,12 @@
 import { Document, NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import * as fs from 'fs';
-import { VRMCVrm } from './vrmc-vrm/vrmc-vrm';
+import { VRMCVrm } from './vrmc-vrm';
+import { VRMCNodeConstraint } from './vrmc-node-constraint';
 
 // Configure I/O.
 const io = new NodeIO()
-    .registerExtensions([...ALL_EXTENSIONS, VRMCVrm]);
+    .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCNodeConstraint]);
 
 // Read from URL.
 const document = await io.read('examples/avatar.vrm');

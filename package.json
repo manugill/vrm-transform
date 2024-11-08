@@ -3,6 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "devDependencies": {
+    "@pixiv/types-vrmc-vrm-1.0": "^3.1.5",
+    "@pixiv/types-vrmc-node-constraint-1.0": "^3.1.5",
+    "@pixiv/types-vrmc-springbone-1.0": "^3.1.5",
     "@types/bun": "latest"
   },
   "peerDependencies": {
@@ -11,7 +14,6 @@
   "dependencies": {
     "@gltf-transform/core": "^4.1.0",
     "@gltf-transform/extensions": "^4.1.0",
-    "@gltf-transform/functions": "^4.1.0",
-    "@pixiv/types-vrmc-vrm-1.0": "^3.1.5"
+    "@gltf-transform/functions": "^4.1.0"
   }
 }

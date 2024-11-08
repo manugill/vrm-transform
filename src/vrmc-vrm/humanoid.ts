@@ -1,5 +1,5 @@
 import { ExtensionProperty, Node, ReaderContext, RefMap, WriterContext, type IProperty, type Nullable } from "@gltf-transform/core";
-import { VRMC_VRM } from "./constants";
+import { VRMC_VRM } from "../constants";
 import type { HumanoidHumanBone, HumanoidHumanBoneName, VRMCVRM } from "@pixiv/types-vrmc-vrm-1.0";
 
 interface IHumanoid extends IProperty {

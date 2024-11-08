@@ -1,5 +1,5 @@
-import { ExtensionProperty, PropertyType, type IProperty, type Nullable, type Ref } from "@gltf-transform/core";
-import { VRMC_VRM } from "./constants.js";
+import { ExtensionProperty, type IProperty, type Nullable } from "@gltf-transform/core";
+import { VRMC_VRM } from "../constants.js";
 import type { Meta } from "./meta.js";
 import { Humanoid } from "./humanoid.js";
 

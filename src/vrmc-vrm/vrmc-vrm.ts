@@ -1,7 +1,7 @@
 import { Extension, ReaderContext, WriterContext } from '@gltf-transform/core';
 import type { VRMCVRM } from '@pixiv/types-vrmc-vrm-1.0';
 import { Vrm } from './vrm.js';
-import { VRMC_VRM } from './constants.js';
+import { VRMC_VRM } from '../constants.js';
 import { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
 
