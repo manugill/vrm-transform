@@ -1,4 +1,4 @@
-import { ExtensionProperty, type IProperty, type Nullable } from "@gltf-transform/core";
+import { ExtensionProperty, PropertyType, type IProperty, type Nullable } from "@gltf-transform/core";
 import { VRMC_VRM } from "../constants.js";
 import type { Meta } from "./meta.js";
 import { Humanoid } from "./humanoid.js";
@@ -15,12 +15,12 @@ export class Vrm extends ExtensionProperty<IVrm> {
     public static EXTENSION_NAME = VRMC_VRM;
 	public declare extensionName: typeof VRMC_VRM;
 	public declare propertyType: 'Vrm';
-	public declare parentTypes: [];
+	public declare parentTypes: [PropertyType.ROOT];
 
     protected init(): void {
         this.extensionName = VRMC_VRM;
 		this.propertyType = 'Vrm';
-		this.parentTypes = [];
+		this.parentTypes = [PropertyType.ROOT];
     }
 
     protected getDefaults(): Nullable<IVrm> {

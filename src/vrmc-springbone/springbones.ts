@@ -1,4 +1,4 @@
-import { ExtensionProperty, RefList, type IProperty, type Nullable } from "@gltf-transform/core";
+import { ExtensionProperty, PropertyType, RefList, type IProperty, type Nullable } from "@gltf-transform/core";
 import { VRMC_SPRINGBONE } from "../constants.js";
 import type { Collider } from "./collider.js";
 import type { ColliderGroup } from "./collider-group.js";
@@ -17,12 +17,12 @@ export class Springbones extends ExtensionProperty<ISpringbones> {
     public static EXTENSION_NAME = VRMC_SPRINGBONE;
 	public declare extensionName: typeof VRMC_SPRINGBONE;
 	public declare propertyType: 'VrmSpringbones';
-	public declare parentTypes: [];
+	public declare parentTypes: [PropertyType.ROOT];
 
     protected init(): void {
         this.extensionName = VRMC_SPRINGBONE;
 		this.propertyType = 'VrmSpringbones';
-		this.parentTypes = [];
+		this.parentTypes = [PropertyType.ROOT];
     }
 
     protected getDefaults(): Nullable<ISpringbones> {

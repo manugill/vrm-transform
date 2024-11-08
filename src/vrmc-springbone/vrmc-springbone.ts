@@ -83,6 +83,8 @@ export class VRMCSpringBone extends Extension {
 			springbones.addSpring(spring);
 		}
 
+		this.document.getRoot().setExtension(NAME, springbones);
+
 		return this;
 	}
 
@@ -90,8 +92,7 @@ export class VRMCSpringBone extends Extension {
 	public write(context: WriterContext): this {
 		const jsonDoc = context.jsonDoc;
 
-		// FIXME: How to handle/detect duplicate Springbones or removal from document?
-		const springbones = this.listProperties().find(prop => prop instanceof Springbones);
+		const springbones = this.document.getRoot().getExtension<Springbones>(NAME);
 		if (!springbones) return this;
 
 		const springbonesDef = {

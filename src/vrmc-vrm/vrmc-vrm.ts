@@ -40,6 +40,9 @@ export class VRMCVrm extends Extension {
 		const humanoid = this.createHumanoid().read(rootDef.humanoid, context);
 		vrm.setHumanoid(humanoid);
 
+		// Add to root for easy access
+		this.document.getRoot().setExtension(NAME, vrm);
+
 		return this;
 	}
 
@@ -47,8 +50,7 @@ export class VRMCVrm extends Extension {
 	public write(context: WriterContext): this {
 		const jsonDoc = context.jsonDoc;
 
-		// FIXME: How to handle/detect duplicate VRM or removal from document?
-		const vrm = this.listProperties().find(prop => prop instanceof Vrm);
+		const vrm = this.document.getRoot().getExtension<Vrm>(NAME);
 		if (!vrm) return this;
 
 		const vrmDef = {

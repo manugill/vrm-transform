@@ -1,4 +1,4 @@
-import { Document, NodeIO } from '@gltf-transform/core';
+import { NodeIO } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
