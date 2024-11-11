@@ -1,4 +1,4 @@
-import { ExtensionProperty, type IProperty, type Nullable, type Node, type vec3, PropertyType, TextureInfo, Texture } from '@gltf-transform/core';
+import { ExtensionProperty, type IProperty, type Nullable, type vec3, PropertyType, TextureInfo, Texture } from '@gltf-transform/core';
 import { VRMC_MATERIALS_MTOON } from '../constants.js';
 
 interface IMToon extends IProperty {

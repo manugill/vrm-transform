@@ -8,12 +8,12 @@ import { prune } from '@gltf-transform/functions';
 import { combineSkins } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 
-function i(strings: TemplateStringsArray, ...parts: any[]) {
+function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
     let res = '';
     for(let i = 0; i < parts.length; i++) {
         res += strings[i];
         if(typeof parts[i] === 'number') {
-            let padded = '        '+parts[i];
+            const padded = '        '+parts[i];
             res += padded.substring(padded.length - 6) + ' ';
         } else {
             res += parts[i];
