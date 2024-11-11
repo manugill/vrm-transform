@@ -9,66 +9,66 @@ import { combineSkins } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
-    let res = '';
-    for(let i = 0; i < parts.length; i++) {
-        res += strings[i];
-        if(typeof parts[i] === 'number') {
-            const padded = '        '+parts[i];
-            res += padded.substring(padded.length - 6) + ' ';
-        } else {
-            res += parts[i];
-        }
+  let res = '';
+  for(let i = 0; i < parts.length; i++) {
+    res += strings[i];
+    if(typeof parts[i] === 'number') {
+      const padded = '        '+parts[i];
+      res += padded.substring(padded.length - 6) + ' ';
+    } else {
+      res += parts[i];
     }
-    return res;
+  }
+  return res;
 }
 
 function documentStats(document: Document) {
-    let totalTriangles = 0;
-    let totalVertices = 0;
-    let totalMorphTargets = 0;
-    console.log();
-    console.log('------------------------------------');
-    document.getRoot().listMeshes().forEach(m => {
-        console.log(m.getName());
-        m.listPrimitives().forEach(p => {
-            const triangles = p.getIndices()!.getCount()/3;
-            const vertices = p.listAttributes()[0].getCount();
-            const morphTargets = p.listTargets().length;
+  let totalTriangles = 0;
+  let totalVertices = 0;
+  let totalMorphTargets = 0;
+  console.log();
+  console.log('------------------------------------');
+  document.getRoot().listMeshes().forEach(m => {
+    console.log(m.getName());
+    m.listPrimitives().forEach(p => {
+      const triangles = p.getIndices()!.getCount()/3;
+      const vertices = p.listAttributes()[0].getCount();
+      const morphTargets = p.listTargets().length;
 
-            totalTriangles += triangles;
-            totalVertices += vertices;
-            totalMorphTargets = Math.max(totalMorphTargets, morphTargets);
+      totalTriangles += triangles;
+      totalVertices += vertices;
+      totalMorphTargets = Math.max(totalMorphTargets, morphTargets);
 
-            console.log(i`\t${triangles}/${vertices}/${morphTargets}`);
-        })
-    });
-    console.log('------------------------------------');
-    console.log(i`\t${totalTriangles}/${totalVertices}/${totalMorphTargets}`);
-    console.log('------------------------------------');
-    // Skeletons/skins
-    document.getRoot().listSkins().forEach(s => {
-        const joints = s.listJoints().length;
-        const parents = s.listParents().length;
-        console.log(i`${s.getName()}: ${joints}/${parents}`);
-    });
-    console.log('------------------------------------');
-    console.log();
+      console.log(i`\t${triangles}/${vertices}/${morphTargets}`);
+    })
+  });
+  console.log('------------------------------------');
+  console.log(i`\t${totalTriangles}/${totalVertices}/${totalMorphTargets}`);
+  console.log('------------------------------------');
+  // Skeletons/skins
+  document.getRoot().listSkins().forEach(s => {
+    const joints = s.listJoints().length;
+    const parents = s.listParents().length;
+    console.log(i`${s.getName()}: ${joints}/${parents}`);
+  });
+  console.log('------------------------------------');
+  console.log();
 }
 
 // Configure I/O.
 const io = new NodeIO()
-    .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone]);
+  .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone]);
 
 // Read from URL.
 const document = await io.read('examples/avatar.vrm');
 documentStats(document);
 
 await document.transform(
-    combineSkins(),
-    prune({
-        // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit
-        keepAttributes: true
-    }),
+  combineSkins(),
+  prune({
+    // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit
+    keepAttributes: true
+  }),
 );
 documentStats(document);
 

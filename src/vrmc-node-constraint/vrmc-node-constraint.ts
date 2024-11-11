@@ -6,72 +6,72 @@ import { type AimConstraint, type RollConstraint, type RotationConstraint, type 
 const NAME = VRMC_NODE_CONSTRAINT;
 
 export class VRMCNodeConstraint extends Extension {
-    public readonly extensionName = NAME;
-	public static readonly EXTENSION_NAME = NAME;
+  public readonly extensionName = NAME;
+  public static readonly EXTENSION_NAME = NAME;
 
-	public createNodeConstraint(): NodeConstraint {
-		return new NodeConstraint(this.document.getGraph());
-	}
+  public createNodeConstraint(): NodeConstraint {
+    return new NodeConstraint(this.document.getGraph());
+  }
 
-    /** @hidden */
-	public read(context: ReaderContext): this {
-		const jsonDoc = context.jsonDoc;
+  /** @hidden */
+  public read(context: ReaderContext): this {
+    const jsonDoc = context.jsonDoc;
 
-		jsonDoc.json.nodes!.forEach((nodeDef, nodeIndex) => {
-			if (!nodeDef.extensions || !nodeDef.extensions[NAME]) return;
-			const nodeConstraintDef = nodeDef.extensions[NAME] as VRMCNodeConstraintDef;
-			const nodeConstraint = this.createNodeConstraint();
-			nodeConstraint.setSpecVersion(nodeConstraintDef.specVersion);
+    jsonDoc.json.nodes!.forEach((nodeDef, nodeIndex) => {
+      if(!nodeDef.extensions || !nodeDef.extensions[NAME]) return;
+      const nodeConstraintDef = nodeDef.extensions[NAME] as VRMCNodeConstraintDef;
+      const nodeConstraint = this.createNodeConstraint();
+      nodeConstraint.setSpecVersion(nodeConstraintDef.specVersion);
 
-			const instanceDef = (
-				nodeConstraintDef.constraint.aim ??
+      const instanceDef = (
+        nodeConstraintDef.constraint.aim ??
 				nodeConstraintDef.constraint.roll ??
 				nodeConstraintDef.constraint.rotation
-			) as AimConstraint&RollConstraint&RotationConstraint;
-			nodeConstraint.setSource(context.nodes[instanceDef.source]);
-			nodeConstraint.setWeight(instanceDef.weight ?? 1.0);
-			nodeConstraint.setAimAxis(instanceDef.aimAxis ?? null);
-			nodeConstraint.setRollAxis(instanceDef.rollAxis ?? null);
+      ) as AimConstraint&RollConstraint&RotationConstraint;
+      nodeConstraint.setSource(context.nodes[instanceDef.source]);
+      nodeConstraint.setWeight(instanceDef.weight ?? 1.0);
+      nodeConstraint.setAimAxis(instanceDef.aimAxis ?? null);
+      nodeConstraint.setRollAxis(instanceDef.rollAxis ?? null);
 
-			context.nodes[nodeIndex].setExtension(NAME, nodeConstraint);
-		});
+      context.nodes[nodeIndex].setExtension(NAME, nodeConstraint);
+    });
 
-		return this;
-	}
+    return this;
+  }
 
-	/** @hidden */
-	public write(context: WriterContext): this {
-		const jsonDoc = context.jsonDoc;
+  /** @hidden */
+  public write(context: WriterContext): this {
+    const jsonDoc = context.jsonDoc;
 
-		this.document
-			.getRoot()
-			.listNodes()
-			.forEach((node) => {
-				const nodeConstraint = node.getExtension<NodeConstraint>(NAME);
-				if(nodeConstraint) {
-					const nodeIndex = context.nodeIndexMap.get(node)!;
-					const nodeDef = jsonDoc.json.nodes![nodeIndex];
-					nodeDef.extensions = nodeDef.extensions || {};
+    this.document
+      .getRoot()
+      .listNodes()
+      .forEach((node) => {
+        const nodeConstraint = node.getExtension<NodeConstraint>(NAME);
+        if(nodeConstraint) {
+          const nodeIndex = context.nodeIndexMap.get(node)!;
+          const nodeDef = jsonDoc.json.nodes![nodeIndex];
+          nodeDef.extensions = nodeDef.extensions || {};
 
-					const baseProperties: {source: number, weight: number} = {
-						source: context.nodeIndexMap.get(nodeConstraint.getSource()!)!,
-						weight: nodeConstraint.getWeight()
-					}
-					const instanceDef: VRMCNodeConstraintDef['constraint'] = {};
-					if(nodeConstraint.getRollAxis()) {
-						instanceDef.roll = {...baseProperties, rollAxis: nodeConstraint.getRollAxis()! };
-					} else if(nodeConstraint.getAimAxis()) {
-						instanceDef.aim = {...baseProperties, aimAxis: nodeConstraint.getAimAxis()! };
-					} else { // Rotation constraint
-						instanceDef.rotation = {...baseProperties};
-					}
-					nodeDef.extensions[NAME] = {
-						specVersion: nodeConstraint.getSpecVersion(),
-						constraint: instanceDef
-					} satisfies VRMCNodeConstraintDef;
-				}
-			});
+          const baseProperties: {source: number, weight: number} = {
+            source: context.nodeIndexMap.get(nodeConstraint.getSource()!)!,
+            weight: nodeConstraint.getWeight()
+          }
+          const instanceDef: VRMCNodeConstraintDef['constraint'] = {};
+          if(nodeConstraint.getRollAxis()) {
+            instanceDef.roll = {...baseProperties, rollAxis: nodeConstraint.getRollAxis()! };
+          } else if(nodeConstraint.getAimAxis()) {
+            instanceDef.aim = {...baseProperties, aimAxis: nodeConstraint.getAimAxis()! };
+          } else { // Rotation constraint
+            instanceDef.rotation = {...baseProperties};
+          }
+          nodeDef.extensions[NAME] = {
+            specVersion: nodeConstraint.getSpecVersion(),
+            constraint: instanceDef
+          } satisfies VRMCNodeConstraintDef;
+        }
+      });
 
-		return this;
-	}
+    return this;
+  }
 }
