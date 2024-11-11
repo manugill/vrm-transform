@@ -5,7 +5,7 @@ import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
 import { prune } from '@gltf-transform/functions';
-import { Collider } from './vrmc-springbone/collider';
+import { combineSkins } from './functions';
 
 function i(strings: TemplateStringsArray, ...parts: any[]) {
     let res = '';
@@ -59,10 +59,11 @@ const io = new NodeIO()
     .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCNodeConstraint, VRMCSpringBone]);
 
 // Read from URL.
-const document = await io.read('examples/avatar.vrm');
+const document = await io.read('examples/avatar_c.vrm');
 documentStats(document);
 
 await document.transform(
+    combineSkins(),
     prune(),
 );
 documentStats(document);
