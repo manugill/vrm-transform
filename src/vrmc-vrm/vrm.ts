@@ -1,12 +1,14 @@
-import { ExtensionProperty, PropertyType, type IProperty, type Nullable } from '@gltf-transform/core';
+import { ExtensionProperty, PropertyType, RefMap, type IProperty, type Nullable } from '@gltf-transform/core';
 import { VRMC_VRM } from '../constants.js';
 import type { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
+import type { Expression } from './expression.js';
 
 interface IVrm extends IProperty {
   specVersion: SpecVersion;
   meta: Meta;
   humanoid: Humanoid;
+  expressions: RefMap<Expression>;
 }
 
 type SpecVersion = '1.0'|'1.0-beta';
@@ -28,6 +30,7 @@ export class Vrm extends ExtensionProperty<IVrm> {
       specVersion: '1.0' as SpecVersion,
       meta: null,
       humanoid: null,
+      expressions: new RefMap<Expression>(),
     });
   }
 
@@ -53,6 +56,22 @@ export class Vrm extends ExtensionProperty<IVrm> {
 
   public setHumanoid(humanoid: Humanoid | null): this {
     return this.setRef('humanoid', humanoid);
+  }
+
+  public getExpressionsNames(): string[] {
+    return this.listRefMapKeys('expressions')
+  }
+
+  public getExpression(name: string): Expression | null {
+    return this.getRefMap('expressions', name);
+  }
+
+  public addExpression(name: string, expression: Expression): this {
+    return this.setRefMap('expressions', name, expression);
+  }
+
+  public removeExpression(name: string): this {
+    return this.setRefMap('expressions', name, null);
   }
 
 }

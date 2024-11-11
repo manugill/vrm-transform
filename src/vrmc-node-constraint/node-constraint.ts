@@ -13,7 +13,7 @@ interface INodeConstraint extends IProperty {
 
 type SpecVersion = '1.0'|'1.0-beta';
 type RollAxis = 'X'|'Y'|'Z';
-type AimAxis =  'PositiveX'|'NegativeX'|'PositiveY'|'NegativeY'|'PositiveZ'|'NegativeZ';
+type AimAxis = 'PositiveX'|'NegativeX'|'PositiveY'|'NegativeY'|'PositiveZ'|'NegativeZ';
 
 export class NodeConstraint extends ExtensionProperty<INodeConstraint> {
   public static EXTENSION_NAME = VRMC_NODE_CONSTRAINT;

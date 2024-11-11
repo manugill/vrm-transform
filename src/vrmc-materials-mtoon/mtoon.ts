@@ -103,7 +103,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setTransparentWithZWrite(transparentWithZWrite: boolean): this {
     return this.set('transparentWithZWrite', transparentWithZWrite);
   }
-    
+
   public getRenderQueueOffsetNumber(): number {
     return this.get('renderQueueOffsetNumber');
   }
@@ -111,7 +111,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setRenderQueueOffsetNumber(renderQueueOffsetNumber: number): this {
     return this.set('renderQueueOffsetNumber', renderQueueOffsetNumber);
   }
-    
+
   public getShadeColorFactor(): vec3 {
     return this.get('shadeColorFactor');
   }
@@ -119,7 +119,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setShadeColorFactor(shadeColorFactor: vec3): this {
     return this.set('shadeColorFactor', shadeColorFactor);
   }
-    
+
   public getShadeMultiplyTexture(): Texture|null {
     return this.getRef('shadeMultiplyTexture');
   }
@@ -131,7 +131,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setShadeMultiplyTexture(shadeMultiplyTexture: Texture|null): this {
     return this.setRef('shadeMultiplyTexture', shadeMultiplyTexture);
   }
-    
+
   public getShadingShiftFactor(): number {
     return this.get('shadingShiftFactor');
   }
@@ -139,7 +139,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setShadingShiftFactor(shadingShiftFactor: number): this {
     return this.set('shadingShiftFactor', shadingShiftFactor);
   }
-    
+
   public getShadingShiftTexture(): Texture|null {
     return this.getRef('shadingShiftTexture');
   }
@@ -151,7 +151,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setShadingShiftTexture(shadingShiftTexture: Texture|null): this {
     return this.setRef('shadingShiftTexture', shadingShiftTexture);
   }
-    
+
   public getShadingToonyFactor(): number {
     return this.get('shadingToonyFactor');
   }
@@ -159,7 +159,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setShadingToonyFactor(shadingToonyFactor: number): this {
     return this.set('shadingToonyFactor', shadingToonyFactor);
   }
-    
+
   public getGiEqualizationFactor(): number {
     return this.get('giEqualizationFactor');
   }
@@ -167,7 +167,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setGiEqualizationFactor(giEqualizationFactor: number): this {
     return this.set('giEqualizationFactor', giEqualizationFactor);
   }
-    
+
   public getMatcapFactor(): vec3 {
     return this.get('matcapFactor');
   }
@@ -175,7 +175,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setMatcapFactor(matcapFactor: vec3): this {
     return this.set('matcapFactor', matcapFactor);
   }
-    
+
   public getMatcapTexture(): Texture|null {
     return this.getRef('matcapTexture');
   }
@@ -187,7 +187,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setMatcapTexture(matcapTexture: Texture|null): this {
     return this.setRef('matcapTexture', matcapTexture);
   }
-    
+
   public getParametricRimColorFactor(): vec3 {
     return this.get('parametricRimColorFactor');
   }
@@ -195,7 +195,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setParametricRimColorFactor(parametricRimColorFactor: vec3): this {
     return this.set('parametricRimColorFactor', parametricRimColorFactor);
   }
-    
+
   public getRimMultiplyTexture(): Texture|null {
     return this.getRef('rimMultiplyTexture');
   }
@@ -207,7 +207,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setRimMultiplyTexture(rimMultiplyTexture: Texture|null): this {
     return this.setRef('rimMultiplyTexture', rimMultiplyTexture);
   }
-    
+
   public getRimLightingMixFactor(): number {
     return this.get('rimLightingMixFactor');
   }
@@ -215,7 +215,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setRimLightingMixFactor(rimLightingMixFactor: number): this {
     return this.set('rimLightingMixFactor', rimLightingMixFactor);
   }
-    
+
   public getParametricRimFresnelPowerFactor(): number {
     return this.get('parametricRimFresnelPowerFactor');
   }
@@ -223,7 +223,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setParametricRimFresnelPowerFactor(parametricRimFresnelPowerFactor: number): this {
     return this.set('parametricRimFresnelPowerFactor', parametricRimFresnelPowerFactor);
   }
-    
+
   public getParametricRimLiftFactor(): number {
     return this.get('parametricRimLiftFactor');
   }
@@ -231,7 +231,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setParametricRimLiftFactor(parametricRimLiftFactor: number): this {
     return this.set('parametricRimLiftFactor', parametricRimLiftFactor);
   }
-    
+
   public getOutlineWidthMode(): OutlineWidthMode {
     return this.get('outlineWidthMode');
   }
@@ -239,7 +239,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setOutlineWidthMode(outlineWidthMode: OutlineWidthMode): this {
     return this.set('outlineWidthMode', outlineWidthMode);
   }
-    
+
   public getOutlineWidthFactor(): number {
     return this.get('outlineWidthFactor');
   }
@@ -247,7 +247,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setOutlineWidthFactor(outlineWidthFactor: number): this {
     return this.set('outlineWidthFactor', outlineWidthFactor);
   }
-    
+
   public getOutlineWidthMultiplyTexture(): Texture|null {
     return this.getRef('outlineWidthMultiplyTexture');
   }
@@ -259,7 +259,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setOutlineWidthMultiplyTexture(outlineWidthMultiplyTexture: Texture|null): this {
     return this.setRef('outlineWidthMultiplyTexture', outlineWidthMultiplyTexture);
   }
-    
+
   public getOutlineColorFactor(): vec3 {
     return this.get('outlineColorFactor');
   }
@@ -267,7 +267,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setOutlineColorFactor(outlineColorFactor: vec3): this {
     return this.set('outlineColorFactor', outlineColorFactor);
   }
-    
+
   public getOutlineLightingMixFactor(): number {
     return this.get('outlineLightingMixFactor');
   }
@@ -275,7 +275,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setOutlineLightingMixFactor(outlineLightingMixFactor: number): this {
     return this.set('outlineLightingMixFactor', outlineLightingMixFactor);
   }
-    
+
   public getUvAnimationMaskTexture(): Texture|null {
     return this.getRef('uvAnimationMaskTexture');
   }
@@ -287,7 +287,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setUvAnimationMaskTexture(uvAnimationMaskTexture: Texture|null): this {
     return this.setRef('uvAnimationMaskTexture', uvAnimationMaskTexture);
   }
-    
+
   public getUvAnimationScrollXSpeedFactor(): number {
     return this.get('uvAnimationScrollXSpeedFactor');
   }
@@ -295,7 +295,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setUvAnimationScrollXSpeedFactor(uvAnimationScrollXSpeedFactor: number): this {
     return this.set('uvAnimationScrollXSpeedFactor', uvAnimationScrollXSpeedFactor);
   }
-    
+
   public getUvAnimationScrollYSpeedFactor(): number {
     return this.get('uvAnimationScrollYSpeedFactor');
   }
@@ -303,7 +303,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   public setUvAnimationScrollYSpeedFactor(uvAnimationScrollYSpeedFactor: number): this {
     return this.set('uvAnimationScrollYSpeedFactor', uvAnimationScrollYSpeedFactor);
   }
-    
+
   public getUvAnimationRotationSpeedFactor(): number {
     return this.get('uvAnimationRotationSpeedFactor');
   }

@@ -1,9 +1,10 @@
 import { Extension, ReaderContext, WriterContext } from '@gltf-transform/core';
-import type { VRMCVRM } from '@pixiv/types-vrmc-vrm-1.0';
+import type { ExpressionPresetName, VRMCVRM } from '@pixiv/types-vrmc-vrm-1.0';
 import { Vrm } from './vrm.js';
-import { VRMC_VRM } from '../constants.js';
+import { PRESET_EXPRESSION_NAMES, VRMC_VRM } from '../constants.js';
 import { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
+import { Expression } from './expression.js';
 
 const NAME = VRMC_VRM;
 
@@ -23,6 +24,10 @@ export class VRMCVrm extends Extension {
     return new Humanoid(this.document.getGraph());
   }
 
+  public createExpression(): Expression {
+    return new Expression(this.document.getGraph());
+  }
+
   /** @hidden */
   public read(context: ReaderContext): this {
     const jsonDoc = context.jsonDoc;
@@ -39,6 +44,15 @@ export class VRMCVrm extends Extension {
 
     const humanoid = this.createHumanoid().read(rootDef.humanoid, context);
     vrm.setHumanoid(humanoid);
+
+    // Expressions (preset and custom)
+    const expressionsDef = rootDef.expressions ?? {};
+    for(const expressionName in expressionsDef.preset ?? {}) {
+      const expressionDef = expressionsDef.preset![expressionName as ExpressionPresetName]!;
+
+      const expression = this.createExpression().read(expressionDef, context);
+      vrm.addExpression(expressionName, expression)
+    }
 
     // Add to root for easy access
     this.document.getRoot().setExtension(NAME, vrm);
@@ -57,7 +71,16 @@ export class VRMCVrm extends Extension {
       specVersion: vrm.getSpecVersion(),
       meta: vrm.getMeta()!.write(context),
       humanoid: vrm.getHumanoid()!.write(context),
+      expressions: {preset: {}, custom: {}},
     } as VRMCVRM;
+
+    for(const expressionName of vrm.getExpressionsNames()) {
+      if(PRESET_EXPRESSION_NAMES.includes(expressionName)) {
+        vrmDef.expressions!.preset![expressionName as ExpressionPresetName] = vrm.getExpression(expressionName)!.write(context);
+      } else {
+        vrmDef.expressions!.custom![expressionName] = vrm.getExpression(expressionName)!.write(context);
+      }
+    }
 
     jsonDoc.json.extensions = jsonDoc.json.extensions || {};
     jsonDoc.json.extensions[NAME] = vrmDef;
