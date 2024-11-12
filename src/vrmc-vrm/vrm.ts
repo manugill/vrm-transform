@@ -62,6 +62,10 @@ export class Vrm extends ExtensionProperty<IVrm> {
     return this.listRefMapKeys('expressions')
   }
 
+  public listExpressions(): Expression[] {
+    return this.listRefMapValues('expressions');
+  }
+
   public getExpression(name: string): Expression | null {
     return this.getRefMap('expressions', name);
   }

@@ -107,7 +107,7 @@ export class VRMCMaterialsMToon extends Extension {
             shadingShiftFactor: mtoon.getShadingShiftFactor(),
             shadingToonyFactor: mtoon.getShadingToonyFactor(),
             giEqualizationFactor: mtoon.getGiEqualizationFactor(),
-            matcapFactor: mtoon.getMatcapFactor(),
+            //matcapFactor: mtoon.getMatcapFactor(), // See below
             parametricRimColorFactor: mtoon.getParametricRimColorFactor(),
             rimLightingMixFactor: mtoon.getRimLightingMixFactor(),
             parametricRimFresnelPowerFactor: mtoon.getParametricRimFresnelPowerFactor(),
@@ -137,6 +137,10 @@ export class VRMCMaterialsMToon extends Extension {
             const texture = mtoon.getMatcapTexture()!;
             const textureInfo = mtoon.getMatcapTextureInfo()!;
             mtoonDef.matcapTexture = context.createTextureInfoDef(texture, textureInfo);
+            // UniVRM defaults to MatcapFactor [0, 0, 0].
+            // This shouldn't be a problem, weren't it for the fact that they don't sample the undefined matcap
+            // texture as all black.
+            mtoonDef.matcapFactor = mtoon.getMatcapFactor();
           }
 
           if(mtoon.getRimMultiplyTexture()) {

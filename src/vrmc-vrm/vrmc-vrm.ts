@@ -47,12 +47,10 @@ export class VRMCVrm extends Extension {
 
     // Expressions (preset and custom)
     const expressionsDef = rootDef.expressions ?? {};
-    for(const expressionName in expressionsDef.preset ?? {}) {
-      const expressionDef = expressionsDef.preset![expressionName as ExpressionPresetName]!;
-
-      const expression = this.createExpression().read(expressionDef, context);
-      vrm.addExpression(expressionName, expression)
-    }
+    Object.entries(expressionsDef.preset ?? {})
+      .forEach(([expressionName, expressionDef]) => vrm.addExpression(expressionName, this.createExpression().read(expressionDef, context)))
+    Object.entries(expressionsDef.custom ?? {})
+      .forEach(([expressionName, expressionDef]) => vrm.addExpression(expressionName, this.createExpression().read(expressionDef, context)))
 
     // Add to root for easy access
     this.document.getRoot().setExtension(NAME, vrm);

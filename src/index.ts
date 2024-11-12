@@ -1,11 +1,11 @@
-import { NodeIO, Document } from '@gltf-transform/core';
+import { NodeIO, Document, VertexLayout } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
 import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
 import { prune } from '@gltf-transform/functions';
-import { combineSkins } from './functions';
+import { combineSkins, pruneMorphTargets } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
@@ -65,12 +65,16 @@ documentStats(document);
 
 await document.transform(
   combineSkins(),
+  pruneMorphTargets(),
   prune({
     // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit
     keepAttributes: true
   }),
 );
 documentStats(document);
+
+// Use SEPARATE vertex layout as this has better compatibility (e.g. UniVRM)
+io.setVertexLayout(VertexLayout.SEPARATE);
 
 // Write to byte array (Uint8Array).
 const glb = await io.writeBinary(document);
