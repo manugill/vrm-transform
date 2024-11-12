@@ -140,6 +140,7 @@ export class VRMCMaterialsMToon extends Extension {
             // UniVRM defaults to MatcapFactor [0, 0, 0].
             // This shouldn't be a problem, weren't it for the fact that they don't sample the undefined matcap
             // texture as all black.
+            // See: https://github.com/vrm-c/UniVRM/issues/2505
             mtoonDef.matcapFactor = mtoon.getMatcapFactor();
           }
 

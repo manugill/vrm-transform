@@ -73,7 +73,7 @@ await document.transform(
 );
 documentStats(document);
 
-// Use SEPARATE vertex layout as this has better compatibility (e.g. UniVRM)
+// Use SEPARATE vertex layout as this has better compatibility (e.g. UniVRM only supports this >v0.127.2)
 io.setVertexLayout(VertexLayout.SEPARATE);
 
 // Write to byte array (Uint8Array).
