@@ -143,31 +143,40 @@ export class Expression extends ExtensionProperty<IExpression> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result: ExpressionDef = {} as any;
 
-    result.morphTargetBinds = [];
+    const morphTargetBinds: ExpressionMorphTargetBindDef[] = [];
     for(const bind of this.listMorphTargetBinds()) {
-      result.morphTargetBinds!.push({
+      morphTargetBinds!.push({
         node: context.nodeIndexMap.get(bind.getNode()!)!,
         index: bind.getIndex(),
         weight: bind.getWeight(),
       } satisfies ExpressionMorphTargetBindDef);
     }
+    if(morphTargetBinds.length > 0) {
+      result.morphTargetBinds = morphTargetBinds;
+    }
 
-    result.materialColorBinds = [];
+    const materialColorBinds: ExpressionMaterialColorBindDef[] = [];
     for(const bind of this.listMaterialColorBinds()) {
-      result.materialColorBinds!.push({
+      materialColorBinds!.push({
         material: context.materialIndexMap.get(bind.getMaterial()!)!,
         type: bind.getType(),
         targetValue: bind.getTargetValue(),
       } satisfies ExpressionMaterialColorBindDef);
     }
+    if(materialColorBinds.length > 0) {
+      result.materialColorBinds = materialColorBinds;
+    }
 
-    result.textureTransformBinds = [];
+    const textureTransformBinds: ExpressionTextureTransformBindDef[] = [];
     for(const bind of this.listTextureTransformBinds()) {
-      result.textureTransformBinds!.push({
+      textureTransformBinds!.push({
         material: context.materialIndexMap.get(bind.getMaterial()!)!,
         scale: bind.getScale(),
         offset: bind.getOffset(),
       } satisfies ExpressionTextureTransformBindDef);
+    }
+    if(textureTransformBinds.length > 0) {
+      result.textureTransformBinds = textureTransformBinds;
     }
 
     result.isBinary = this.getIsBinary();
