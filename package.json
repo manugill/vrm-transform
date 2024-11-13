@@ -25,6 +25,7 @@
     "@gltf-transform/extensions": "^4.1.0",
     "@gltf-transform/functions": "^4.1.0",
     "@stylistic/eslint-plugin": "^2.10.1",
-    "meshoptimizer": "^0.22.0"
+    "meshoptimizer": "^0.22.0",
+    "sharp": "^0.33.5"
   }
 }

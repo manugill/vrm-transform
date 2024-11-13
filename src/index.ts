@@ -1,11 +1,12 @@
 import { NodeIO, Document, VertexLayout } from '@gltf-transform/core';
 import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
+import sharp from 'sharp';
 import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
-import { prune } from '@gltf-transform/functions';
-import { combineSkins, pruneMorphTargets, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
+import { dedup, prune } from '@gltf-transform/functions';
+import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
@@ -60,19 +61,22 @@ const io = new NodeIO()
   .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone]);
 
 // Read from URL.
-const document = await io.read('examples/avatar.vrm');
+const document = await io.read('examples/avatar_c.vrm');
 documentStats(document);
 
 await document.transform(
   combineSkins(),
   pruneSpringbones(),
   pruneMorphTargets(),
+  dedup(),
   pruneVrmVertexAttributes(),
   prune({
     // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit
-    keepAttributes: true
+    keepAttributes: true,
   }),
+  optimizeThumbnail({ encoder: sharp }),
 );
+
 documentStats(document);
 
 // Use SEPARATE vertex layout as this has better compatibility (e.g. UniVRM only supports this >v0.127.2)

@@ -29,6 +29,7 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
 | `pruneMorphTargets` | Determines which morphTargets are used in expressions and removes those that aren't being used | ✅ | ✅ | |
 | `pruneSpringBones` | Determines which springbones, joints and colliders are unused and removes them |  | | ✅ |
 | `pruneVrmVertexAttributes` | Special function replicating the attribute pruning of `prune` taking into account VRM requirements | ✅ | | |
+| `optimizeThumbnail` | Ensures the embedded thumbnail is JPEG and does not exceed the 1024x1024 recommended dimensions | ✅ | | |
 
 # Limitations
 
@@ -43,5 +44,6 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
     keepAttributes: true
   }),
   ```
+* Optimizing the thumbnail image requires an encoder, see [glTF-Transform](https://gltf-transform.dev/modules/functions/functions/compressTexture) documentation for more details.
 
 The output can always be validated using the [VRM 1.0 validator](https://vrm-validator.fern.solutions/).
