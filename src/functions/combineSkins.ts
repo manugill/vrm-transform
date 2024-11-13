@@ -1,5 +1,5 @@
-import { Accessor, Mesh, Node, Skin, type Document, type Transform } from '@gltf-transform/core';
-import { createTransform } from '@gltf-transform/functions';
+import { Accessor, Mesh, Node, PropertyType, Skin, type Document, type Transform } from '@gltf-transform/core';
+import { createTransform, prune } from '@gltf-transform/functions';
 
 const NAME = 'combineSkins';
 
@@ -111,6 +111,14 @@ export function combineSkins(): Transform {
     processedSkeletons.forEach(ctx => {
       ctx.newSkin.getInverseBindMatrices()!.setArray(new Float32Array(ctx.inverseBindMatrices));
     })
+
+    await document.transform(
+      prune({
+        propertyTypes: [PropertyType.SKIN],
+        keepAttributes: true,
+        keepIndices: true,
+      }),
+    );
   });
 }
 const mat4 = new Array(16);

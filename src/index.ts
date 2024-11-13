@@ -7,6 +7,7 @@ import { VRMCSpringBone } from './vrmc-springbone';
 import { prune } from '@gltf-transform/functions';
 import { combineSkins, pruneMorphTargets } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
+import { pruneSpringbones } from './functions/pruneSpringbones';
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
   let res = '';
@@ -60,11 +61,12 @@ const io = new NodeIO()
   .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone]);
 
 // Read from URL.
-const document = await io.read('examples/avatar.vrm');
+const document = await io.read('examples/avatar_c.vrm');
 documentStats(document);
 
 await document.transform(
   combineSkins(),
+  pruneSpringbones(),
   pruneMorphTargets(),
   prune({
     // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit

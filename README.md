@@ -27,6 +27,7 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
 |--------------|-------------|:---------:|:-------------:|:-------------:|
 | `combineSkins` | Ensures that the VRM file only uses one Skin across all (skinned) meshes | | | ✅ |
 | `pruneMorphTargets` | Determines which morphTargets are used in expressions and removes those that aren't being used | ✅ | ✅ | |
+| `pruneSpringBones` | Determines which springbones, joints and colliders are unused and removes them |  | | ✅ |
 
 # Limitations
 
