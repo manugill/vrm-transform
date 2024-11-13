@@ -6,7 +6,7 @@ import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
 import { dedup, prune, sparse, textureCompress, weld } from '@gltf-transform/functions';
-import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
+import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSolidMToonTextures, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
 
@@ -66,7 +66,7 @@ const io = new NodeIO()
   });
 
 // Read from URL.
-const document = await io.read('examples/avatar.vrm');
+const document = await io.read('examples/avatar_c.vrm');
 documentStats(document);
 
 await document.transform(
@@ -74,6 +74,7 @@ await document.transform(
   pruneSpringbones(),
   pruneMorphTargets(),
   dedup(),
+  pruneSolidMToonTextures(),
   pruneVrmVertexAttributes(),
   prune({
     // NOTE: The normal attribute is needed for MToon material, but prune assumes it goes unused due to KHR_materials_unlit
@@ -87,7 +88,7 @@ await document.transform(
     encoder: sharp,
     targetFormat: 'webp',
     // Don't recompress thumbnailImage
-    slots: /^(?!thumbnailImage).*$/
+    slots: /^(?!thumbnailImage|normalTexture).*$/
   })
 );
 

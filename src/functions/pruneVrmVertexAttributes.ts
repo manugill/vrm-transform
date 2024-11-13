@@ -69,8 +69,7 @@ function treeShake(prop: Property, keepExtras: boolean): void {
   }
 }
 
-/** @hidden */
-export function isEmptyObject(object: Record<string, unknown>): boolean {
+function isEmptyObject(object: Record<string, unknown>): boolean {
   for(const key in object) return false;
   return true;
 }

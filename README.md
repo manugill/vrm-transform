@@ -27,6 +27,7 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
 |--------------|-------------|:---------:|:-------------:|:-------------:|
 | `combineSkins` | Ensures that the VRM file only uses one Skin across all (skinned) meshes | | | ✅ |
 | `pruneMorphTargets` | Determines which morphTargets are used in expressions and removes those that aren't being used | ✅ | ✅ | |
+| `pruneSolidMToonTextures` | Special function replicating the solid texture pruning of `prune` taking into account MToon materials | ✅ | ✅ | |
 | `pruneSpringBones` | Determines which springbones, joints and colliders are unused and removes them |  | | ✅ |
 | `pruneVrmVertexAttributes` | Special function replicating the attribute pruning of `prune` taking into account VRM requirements | ✅ | | |
 | `optimizeThumbnail` | Ensures the embedded thumbnail is JPEG and does not exceed the 1024x1024 recommended dimensions | ✅ | | |
@@ -37,9 +38,10 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
   ```js
   io.setVertexLayout(VertexLayout.SEPARATE);
   ```
-* The built-in `prune` function will assume that the `NORMAL` attribute is not needed for meshes shaded using the MToon material. This is caused by the presence of the `KHR_materials_unlit` extension. To avoid this enabled the `keepAttributes` property and use the purpose-built `pruneVrmVertexAttributes`:
+* The built-in `prune` function will assume that the `NORMAL` attribute is not needed for meshes shaded using the MToon material. This is caused by the presence of the `KHR_materials_unlit` extension. To avoid this enabled the `keepAttributes` property and use the purpose-built `pruneSolidMToonTextures` and `pruneVrmVertexAttributes` functions:
   ```js
-  prunteVrmVertexAttributes(),
+  pruneSolidMToonTextures(),
+  pruneVrmVertexAttributes(),
   prune({
     keepAttributes: true
   }),

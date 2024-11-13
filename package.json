@@ -25,7 +25,11 @@
     "@gltf-transform/extensions": "^4.1.0",
     "@gltf-transform/functions": "^4.1.0",
     "@stylistic/eslint-plugin": "^2.10.1",
+    "@types/gl-matrix": "^3.2.0",
+    "gl-matrix": "^3.4.3",
     "meshoptimizer": "^0.22.0",
+    "ndarray": "^1.0.19",
+    "ndarray-pixels": "^4.1.0",
     "sharp": "^0.33.5"
   }
 }
