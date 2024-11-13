@@ -14,6 +14,7 @@ export default [
       '@stylistic': stylistic
     },
     rules: {
+      '@typescript-eslint/no-unused-vars': ['error', {'argsIgnorePattern': '^_'}],
       '@stylistic/indent': ['error', 2],
       '@stylistic/function-call-spacing': ['error', 'never'],
       '@stylistic/key-spacing': ['error'],

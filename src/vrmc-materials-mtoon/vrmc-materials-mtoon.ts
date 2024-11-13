@@ -1,4 +1,4 @@
-import { Extension, ReaderContext, WriterContext, type vec3 } from '@gltf-transform/core';
+import { Extension, PropertyType, ReaderContext, WriterContext, type vec3 } from '@gltf-transform/core';
 import { VRMC_MATERIALS_MTOON } from '../constants.js';
 import { type VRMCMaterialsMToon as VRMCMaterialsMToonDef } from '@pixiv/types-vrmc-materials-mtoon-1.0';
 import { MToon } from './mtoon.js';
@@ -8,13 +8,28 @@ const NAME = VRMC_MATERIALS_MTOON;
 export class VRMCMaterialsMToon extends Extension {
   public readonly extensionName = NAME;
   public static readonly EXTENSION_NAME = NAME;
+  // NOTE: use preread and prewrite as this is required for material extensions. With just read/write,
+  //       extensions like EXT_texture_webp would perform their read/write at the wrong time.
+  //       See: https://github.com/donmccurdy/glTF-Transform/issues/1256#issuecomment-1989969053
+  public readonly prereadTypes = [PropertyType.MESH];
+  public readonly prewriteTypes = [PropertyType.MESH];
 
   public createMToon(): MToon {
     return new MToon(this.document.getGraph());
   }
 
   /** @hidden */
-  public read(context: ReaderContext): this {
+  public read(_context: ReaderContext): this {
+    return this;
+  }
+
+  /** @hidden */
+  public write(_context: WriterContext): this {
+    return this;
+  }
+
+  /** @hidden */
+  public preread(context: ReaderContext): this {
     const jsonDoc = context.jsonDoc;
     const textureDefs = jsonDoc.json.textures || [];
 
@@ -86,7 +101,7 @@ export class VRMCMaterialsMToon extends Extension {
   }
 
   /** @hidden */
-  public write(context: WriterContext): this {
+  public prewrite(context: WriterContext): this {
     const jsonDoc = context.jsonDoc;
 
     this.document
