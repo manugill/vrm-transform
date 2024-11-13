@@ -5,9 +5,10 @@ import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
-import { dedup, prune } from '@gltf-transform/functions';
+import { dedup, prune, sparse, textureCompress, weld } from '@gltf-transform/functions';
 import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
+import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
   let res = '';
@@ -58,10 +59,14 @@ function documentStats(document: Document) {
 
 // Configure I/O.
 const io = new NodeIO()
-  .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone]);
+  .registerExtensions([...ALL_EXTENSIONS, VRMCVrm, VRMCMaterialsMToon, VRMCNodeConstraint, VRMCSpringBone])
+  .registerDependencies({
+    'meshopt.decoder': MeshoptDecoder,
+    'meshopt.encoder': MeshoptEncoder,
+  });
 
 // Read from URL.
-const document = await io.read('examples/avatar_c.vrm');
+const document = await io.read('examples/avatar.vrm');
 documentStats(document);
 
 await document.transform(
@@ -75,6 +80,15 @@ await document.transform(
     keepAttributes: true,
   }),
   optimizeThumbnail({ encoder: sharp }),
+  // Standard glTF-Transform operations
+  weld(),
+  sparse(),
+  textureCompress({
+    encoder: sharp,
+    targetFormat: 'webp',
+    // Don't recompress thumbnailImage
+    slots: /^(?!thumbnailImage).*$/
+  })
 );
 
 documentStats(document);
