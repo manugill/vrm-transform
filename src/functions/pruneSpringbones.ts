@@ -7,6 +7,8 @@ import type { Collider } from '../vrmc-springbone/collider';
 
 const NAME = 'pruneSpringbones';
 
+const EPSILON = Number.EPSILON;
+
 /**
  * Checks all springbones and removes any joints that serve no (visual) purpose.
  * In case all joints of a bone can be removed, the bone itself will be removed.
@@ -29,6 +31,16 @@ export function pruneSpringbones(): Transform {
       return;
     }
 
+    // Remove degenerate colliders
+    // FIXME: Take fallback colliders into account when using `VRMC_springBone_extended_collider`
+    for(const collider of springbones.listColliders()) {
+      if(collider.getRadius() <= EPSILON) {
+        springbones.removeCollider(collider);
+        collider.dispose();
+        stats.colliders++;
+      }
+    }
+
     // List all bones that can deform a skinned mesh.
     const bones = new Set<Node>();
     root.listSkins().forEach(skin => {
@@ -45,8 +57,10 @@ export function pruneSpringbones(): Transform {
       for(let i = joints.length - 1; i > 0; i--) {
         const joint = joints[i];
         const jointNode = joint.getNode();
+        // Note: Only remove joint if parent node is not relevant.
+        //       This is needed as rotation of a joint is based on its child.
         const parentJointNode = joints[i - 1].getNode();
-        if(!jointNode || !parentJointNode || (!isNodeRelevant(jointNode, bones) && !isNodeRelevant(parentJointNode, bones))) {
+        if(!jointNode || !parentJointNode || !isNodeRelevant(parentJointNode, bones)) {
           // Joint effects node that is not relevant, safe to remove
           spring.removeJoint(joint);
           joint.dispose();
