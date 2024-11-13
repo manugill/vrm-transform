@@ -1,5 +1,7 @@
-import { ExtensionProperty, type IProperty, type Nullable, type vec3, PropertyType, TextureInfo, Texture } from '@gltf-transform/core';
+import { ExtensionProperty, type IProperty, type Nullable, type vec3, PropertyType, TextureInfo, Texture, TextureChannel } from '@gltf-transform/core';
 import { VRMC_MATERIALS_MTOON } from '../constants.js';
+
+const { R, G, B } = TextureChannel;
 
 interface IMToon extends IProperty {
   specVersion: SpecVersion;
@@ -129,7 +131,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setShadeMultiplyTexture(shadeMultiplyTexture: Texture|null): this {
-    return this.setRef('shadeMultiplyTexture', shadeMultiplyTexture);
+    return this.setRef('shadeMultiplyTexture', shadeMultiplyTexture, { channels: R | G | B, isColor: true });
   }
 
   public getShadingShiftFactor(): number {
@@ -149,7 +151,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setShadingShiftTexture(shadingShiftTexture: Texture|null): this {
-    return this.setRef('shadingShiftTexture', shadingShiftTexture);
+    return this.setRef('shadingShiftTexture', shadingShiftTexture, { channels: R });
   }
 
   public getShadingToonyFactor(): number {
@@ -185,7 +187,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setMatcapTexture(matcapTexture: Texture|null): this {
-    return this.setRef('matcapTexture', matcapTexture);
+    return this.setRef('matcapTexture', matcapTexture, { channels: R | G | B, isColor: true });
   }
 
   public getParametricRimColorFactor(): vec3 {
@@ -205,7 +207,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setRimMultiplyTexture(rimMultiplyTexture: Texture|null): this {
-    return this.setRef('rimMultiplyTexture', rimMultiplyTexture);
+    return this.setRef('rimMultiplyTexture', rimMultiplyTexture, { channels: R | G | B, isColor: true });
   }
 
   public getRimLightingMixFactor(): number {
@@ -257,7 +259,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setOutlineWidthMultiplyTexture(outlineWidthMultiplyTexture: Texture|null): this {
-    return this.setRef('outlineWidthMultiplyTexture', outlineWidthMultiplyTexture);
+    return this.setRef('outlineWidthMultiplyTexture', outlineWidthMultiplyTexture, { channels: G });
   }
 
   public getOutlineColorFactor(): vec3 {
@@ -285,7 +287,7 @@ export class MToon extends ExtensionProperty<IMToon> {
   }
 
   public setUvAnimationMaskTexture(uvAnimationMaskTexture: Texture|null): this {
-    return this.setRef('uvAnimationMaskTexture', uvAnimationMaskTexture);
+    return this.setRef('uvAnimationMaskTexture', uvAnimationMaskTexture, { channels: B });
   }
 
   public getUvAnimationScrollXSpeedFactor(): number {

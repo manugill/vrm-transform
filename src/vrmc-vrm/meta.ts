@@ -1,6 +1,8 @@
-import { ExtensionProperty, ReaderContext, Texture, WriterContext, type IProperty, type Nullable } from '@gltf-transform/core';
+import { ExtensionProperty, ReaderContext, Texture, TextureChannel, WriterContext, type IProperty, type Nullable } from '@gltf-transform/core';
 import { VRMC_VRM } from '../constants';
 import type { VRMCVRM } from '@pixiv/types-vrmc-vrm-1.0';
+
+const { R, G, B } = TextureChannel;
 
 interface IMeta extends IProperty {
   name: string;
@@ -126,7 +128,8 @@ export class Meta extends ExtensionProperty<IMeta> {
   }
 
   public setThumbnailImage(thumbnailImage: Texture|null): this {
-    return this.setRef('thumbnailImage', thumbnailImage);
+    // FIXME: Can Thumbnail images contain alpha?
+    return this.setRef('thumbnailImage', thumbnailImage, { channels: R | G | B, isColor: true });
   }
 
   public getLicenseUrl(): string {
