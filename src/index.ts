@@ -9,6 +9,7 @@ import { dedup, prune, sparse, textureCompress, weld } from '@gltf-transform/fun
 import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSolidMToonTextures, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
+import { Mode, toktx } from '@gltf-transform/cli'
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
   let res = '';
@@ -84,12 +85,25 @@ await document.transform(
   // Standard glTF-Transform operations
   weld(),
   sparse(),
-  textureCompress({
+  // Use KTX2 compressed textures
+  toktx({
     encoder: sharp,
-    targetFormat: 'webp',
-    // Don't recompress thumbnailImage
-    slots: /^(?!thumbnailImage|normalTexture).*$/
-  })
+    //resize: [opts.textureSize, opts.textureSize],
+    mode: Mode.UASTC,
+    slots: /^(?:normalTexture|occlusionTexture|metallicRoughnessTexture)$/,
+    level: 4,
+    rdo: true,
+    rdoLambda: 4,
+    limitInputPixels: true,
+  }),
+  toktx({
+    encoder: sharp,
+    //resize: [opts.textureSize, opts.textureSize],
+    slots: /^(?!thumbnailImage).*$/,
+    mode: Mode.ETC1S,
+    quality: 255,
+    limitInputPixels: true,
+  }),
 );
 
 documentStats(document);

@@ -47,5 +47,6 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
   }),
   ```
 * Optimizing the thumbnail image requires an encoder, see [glTF-Transform](https://gltf-transform.dev/modules/functions/functions/compressTexture) documentation for more details.
+* UniVRM only supports loading KTX2 textures at runtime (= play mode) and not in the editor.
 
 The output can always be validated using the [VRM 1.0 validator](https://vrm-validator.fern.solutions/).
