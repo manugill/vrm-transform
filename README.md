@@ -31,6 +31,7 @@ Most of these aim to optimize the .vrm file, either by reducing the file size, o
 | `pruneSpringBones` | Determines which springbones, joints and colliders are unused and removes them |  | | ✅ |
 | `pruneVrmVertexAttributes` | Special function replicating the attribute pruning of `prune` taking into account VRM requirements | ✅ | | |
 | `optimizeThumbnail` | Ensures the embedded thumbnail is JPEG and does not exceed the 1024x1024 recommended dimensions | ✅ | | |
+| `compressTexturesKTX2` | Compresses all textures using the Basis_universal encoder | ✅ | ✅ (memory) | |
 
 # Limitations
 

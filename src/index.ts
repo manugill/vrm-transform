@@ -5,11 +5,10 @@ import * as fs from 'fs';
 import { VRMCVrm } from './vrmc-vrm';
 import { VRMCNodeConstraint } from './vrmc-node-constraint';
 import { VRMCSpringBone } from './vrmc-springbone';
-import { dedup, prune, sparse, textureCompress, weld } from '@gltf-transform/functions';
-import { combineSkins, optimizeThumbnail, pruneMorphTargets, pruneSolidMToonTextures, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
+import { dedup, prune, sparse, weld } from '@gltf-transform/functions';
+import { combineSkins, compressTexturesKTX2, optimizeThumbnail, pruneMorphTargets, pruneSolidMToonTextures, pruneSpringbones, pruneVrmVertexAttributes } from './functions';
 import { VRMCMaterialsMToon } from './vrmc-materials-mtoon';
 import { MeshoptDecoder, MeshoptEncoder } from 'meshoptimizer';
-import { Mode, toktx } from '@gltf-transform/cli'
 
 function i(strings: TemplateStringsArray, ...parts: (string|number)[]) {
   let res = '';
@@ -85,25 +84,7 @@ await document.transform(
   // Standard glTF-Transform operations
   weld(),
   sparse(),
-  // Use KTX2 compressed textures
-  toktx({
-    encoder: sharp,
-    //resize: [opts.textureSize, opts.textureSize],
-    mode: Mode.UASTC,
-    slots: /^(?:normalTexture|occlusionTexture|metallicRoughnessTexture)$/,
-    level: 4,
-    rdo: true,
-    rdoLambda: 4,
-    limitInputPixels: true,
-  }),
-  toktx({
-    encoder: sharp,
-    //resize: [opts.textureSize, opts.textureSize],
-    slots: /^(?!thumbnailImage).*$/,
-    mode: Mode.ETC1S,
-    quality: 255,
-    limitInputPixels: true,
-  }),
+  compressTexturesKTX2(),
 );
 
 documentStats(document);
