@@ -85,7 +85,6 @@ export class LookAt extends ExtensionProperty<ILookAt> {
   }
 
   public read(lookAtDef: Exclude<VRMCVRM['lookAt'], undefined>): this {
-    console.log(lookAtDef);
     this.set('offsetFromHeadBone', (lookAtDef.offsetFromHeadBone as vec3) ?? null);
     this.set('type', lookAtDef.type ?? null);
     this.set('rangeMapHorizontalInner', parseRangeMap(lookAtDef.rangeMapHorizontalInner));
@@ -109,7 +108,6 @@ export class LookAt extends ExtensionProperty<ILookAt> {
     writeRangeMap(this.getRangeMapVerticalDown(), lookAtDef, 'rangeMapVerticalDown');
     writeRangeMap(this.getRangeMapVerticalUp(), lookAtDef, 'rangeMapVerticalUp');
 
-    console.log(lookAtDef);
     return lookAtDef;
   }
 }

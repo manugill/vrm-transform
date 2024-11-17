@@ -6,6 +6,7 @@ import { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
 import { Expression } from './expression.js';
 import { LookAt } from './look-at.js';
+import { FirstPerson } from './first-person.js';
 
 const NAME = VRMC_VRM;
 
@@ -31,6 +32,10 @@ export class VRMCVrm extends Extension {
 
   public createLookAt(): LookAt {
     return new LookAt(this.document.getGraph());
+  }
+
+  public createFirstPerson(): FirstPerson {
+    return new FirstPerson(this.document.getGraph());
   }
 
   /** @hidden */
@@ -60,6 +65,11 @@ export class VRMCVrm extends Extension {
     if(rootDef.lookAt !== undefined) {
       const lookAt = this.createLookAt().read(rootDef.lookAt!);
       vrm.setLookAt(lookAt);
+    }
+
+    if(rootDef.firstPerson !== undefined) {
+      const firstPerson = this.createFirstPerson().read(rootDef.firstPerson!, context);
+      vrm.setFirstPerson(firstPerson);
     }
 
     // Add to root for easy access
@@ -93,6 +103,11 @@ export class VRMCVrm extends Extension {
     const lookAt = vrm.getLookAt();
     if(lookAt !== null) {
       vrmDef.lookAt = lookAt.write();
+    }
+
+    const firstPerson = vrm.getFirstPerson();
+    if(firstPerson !== null) {
+      vrmDef.firstPerson = firstPerson.write(context);
     }
 
     jsonDoc.json.extensions = jsonDoc.json.extensions || {};

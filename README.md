@@ -9,7 +9,7 @@ This repository contains a collection of extensions and transform functions for 
 
 | Extension | Supported | Notes |
 |-----------|:---------:|-------|
-| VRMC_vrm-1.0 | ✅ | `lookAt` and `firstPerson` aren't supported yet |
+| VRMC_vrm-1.0 | ✅ | |
 | VRMC_materials_mtoon-1.0 | ✅ | |
 | VRMC_materials_hdr_emissiveMap-1.0 | ❌ | Superseded by [`KHR_materials_emissive_strength`](https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_materials_emissive_strength/README.md) |
 | VRMC_node_constraint-1.0 | ✅ | |

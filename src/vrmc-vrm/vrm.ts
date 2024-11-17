@@ -4,6 +4,7 @@ import type { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
 import type { Expression } from './expression.js';
 import type { LookAt } from './look-at.js';
+import type { FirstPerson } from './first-person.js';
 
 interface IVrm extends IProperty {
   specVersion: SpecVersion;
@@ -11,6 +12,7 @@ interface IVrm extends IProperty {
   humanoid: Humanoid;
   expressions: RefMap<Expression>;
   lookAt: LookAt;
+  firstPerson: FirstPerson;
 }
 
 type SpecVersion = '1.0'|'1.0-beta';
@@ -34,6 +36,7 @@ export class Vrm extends ExtensionProperty<IVrm> {
       humanoid: null,
       expressions: new RefMap<Expression>(),
       lookAt: null,
+      firstPerson: null,
     });
   }
 
@@ -87,6 +90,14 @@ export class Vrm extends ExtensionProperty<IVrm> {
 
   public setLookAt(lookAt: LookAt|null): this {
     return this.setRef('lookAt', lookAt);
+  }
+
+  public getFirstPerson(): FirstPerson|null {
+    return this.getRef('firstPerson');
+  }
+
+  public setFirstPerson(firstPerson: FirstPerson|null): this {
+    return this.setRef('firstPerson', firstPerson);
   }
 
 }
