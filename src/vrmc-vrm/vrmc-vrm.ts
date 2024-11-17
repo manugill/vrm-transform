@@ -5,6 +5,7 @@ import { PRESET_EXPRESSION_NAMES, VRMC_VRM } from '../constants.js';
 import { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
 import { Expression } from './expression.js';
+import { LookAt } from './look-at.js';
 
 const NAME = VRMC_VRM;
 
@@ -26,6 +27,10 @@ export class VRMCVrm extends Extension {
 
   public createExpression(): Expression {
     return new Expression(this.document.getGraph());
+  }
+
+  public createLookAt(): LookAt {
+    return new LookAt(this.document.getGraph());
   }
 
   /** @hidden */
@@ -51,6 +56,11 @@ export class VRMCVrm extends Extension {
       .forEach(([expressionName, expressionDef]) => vrm.addExpression(expressionName, this.createExpression().read(expressionDef, context)))
     Object.entries(expressionsDef.custom ?? {})
       .forEach(([expressionName, expressionDef]) => vrm.addExpression(expressionName, this.createExpression().read(expressionDef, context)))
+
+    if(rootDef.lookAt !== undefined) {
+      const lookAt = this.createLookAt().read(rootDef.lookAt!);
+      vrm.setLookAt(lookAt);
+    }
 
     // Add to root for easy access
     this.document.getRoot().setExtension(NAME, vrm);
@@ -78,6 +88,11 @@ export class VRMCVrm extends Extension {
       } else {
         vrmDef.expressions!.custom![expressionName] = vrm.getExpression(expressionName)!.write(context);
       }
+    }
+
+    const lookAt = vrm.getLookAt();
+    if(lookAt !== null) {
+      vrmDef.lookAt = lookAt.write();
     }
 
     jsonDoc.json.extensions = jsonDoc.json.extensions || {};

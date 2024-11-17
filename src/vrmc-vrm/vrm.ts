@@ -3,12 +3,14 @@ import { VRMC_VRM } from '../constants.js';
 import type { Meta } from './meta.js';
 import { Humanoid } from './humanoid.js';
 import type { Expression } from './expression.js';
+import type { LookAt } from './look-at.js';
 
 interface IVrm extends IProperty {
   specVersion: SpecVersion;
   meta: Meta;
   humanoid: Humanoid;
   expressions: RefMap<Expression>;
+  lookAt: LookAt;
 }
 
 type SpecVersion = '1.0'|'1.0-beta';
@@ -31,6 +33,7 @@ export class Vrm extends ExtensionProperty<IVrm> {
       meta: null,
       humanoid: null,
       expressions: new RefMap<Expression>(),
+      lookAt: null,
     });
   }
 
@@ -76,6 +79,14 @@ export class Vrm extends ExtensionProperty<IVrm> {
 
   public removeExpression(name: string): this {
     return this.setRefMap('expressions', name, null);
+  }
+
+  public getLookAt(): LookAt|null {
+    return this.getRef('lookAt');
+  }
+
+  public setLookAt(lookAt: LookAt|null): this {
+    return this.setRef('lookAt', lookAt);
   }
 
 }
