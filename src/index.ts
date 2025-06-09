@@ -84,7 +84,7 @@ const io = new NodeIO()
 	});
 
 const inputFromCli = process.argv[2];
-const document = await io.read("input/" + inputFromCli + ".vrm");
+const document = await io.read("input/" + inputFromCli);
 documentStats(document);
 
 await document.transform(
@@ -113,4 +113,4 @@ io.setVertexLayout(VertexLayout.SEPARATE);
 // Write to byte array (Uint8Array).
 const glb = await io.writeBinary(document);
 
-fs.writeFileSync("output/" + inputFromCli + ".optimized.vrm", glb);
+fs.writeFileSync("output/" + inputFromCli.replace(".vrm", ".optimized.vrm"), glb);
