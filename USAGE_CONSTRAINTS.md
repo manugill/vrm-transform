@@ -17,11 +17,13 @@ VRM files from Vroid Studio lack twist bones and constraints, causing:
 - ❌ Wrist "candy wrapper" deformation when hands rotate
 - ❌ Unrealistic arm twisting
 - ❌ Poor deformation in VR applications
+- ❌ Missing bones in skin joint arrays for mesh deformation
 
 After adding constraints:
 - ✅ Natural wrist rotation
 - ✅ Proper twist distribution along arms
 - ✅ Better deformation for VR and animation
+- ✅ Constraint bones properly integrated into mesh deformation system
 
 ## Usage Examples
 
@@ -48,9 +50,11 @@ bun run src/processVrmWithConstraints.ts path/to/model.vrm
 ## What Gets Added
 
 ### Roll Constraints (Twist Bones)
-- **Upper arm roll bones**: `J_Roll_L_UpperArm`, `J_Roll_R_UpperArm`
-- **Lower arm roll bones**: `J_Roll_L_LowerArm`, `J_Roll_R_LowerArm`
-- **Configuration**: 50% twist transfer, X-axis rotation
+- **Upper arm roll bones**: `J_Roll_L_UpperArm`, `J_Roll_R_UpperArm` (50% weight)
+- **Elbow roll bones**: `J_Roll_L_Elbow`, `J_Roll_R_Elbow` (50% weight)
+- **Lower arm roll bones**: `J_Roll_L_LowerArm`, `J_Roll_R_LowerArm` (50% weight)
+- **Hand roll bones**: `J_Roll_L_Hand`, `J_Roll_R_Hand` (100% weight - critical for wrist fix)
+- **Configuration**: X-axis rotation, varying weights for optimal distribution
 
 ### Aim Constraints (Sleeve Bones)
 - **Aim bones**: `J_Aim_L_TopsUpperArm`, `J_Aim_R_TopsUpperArm`
@@ -67,19 +71,29 @@ bun run src/processVrmWithConstraints.ts path/to/model.vrm
 ### Bone Structure Added
 ```
 J_Bip_L_UpperArm (original)
-├── J_Roll_L_UpperArm (new - roll constraint)
+├── J_Roll_L_UpperArm (new - roll constraint, 50% weight)
 ├── J_Aim_L_TopsUpperArm (new - aim constraint)
 │   ├── J_Sec_L_TopsUpperArmInside (new)
 │   └── J_Sec_L_TopsUpperArmOutside (new)
 └── J_Bip_L_LowerArm (original)
-    └── J_Roll_L_LowerArm (new - roll constraint)
+    ├── J_Roll_L_Elbow (new - roll constraint, 50% weight)
+    ├── J_Roll_L_LowerArm (new - roll constraint, 50% weight)
+    └── J_Bip_L_Hand (original)
+        └── J_Roll_L_Hand (new - roll constraint, 100% weight - CRITICAL)
 ```
 
 ### Constraint Settings
-- **Roll axis**: X (standard for arms)
-- **Roll weight**: 0.5 (50% of parent rotation)
+- **Roll axis**: X (standard for arms), Y (for elbow)
+- **Roll weights**:
+  - Upper arm, elbow, lower arm: 0.5 (50% of parent rotation)
+  - Hand: 1.0 (100% - critical for wrist deformation fix)
 - **Aim axis**: PositiveX (forward direction)
 - **Aim weight**: 1.0 (full strength)
+
+### Skin Integration
+- **Critical**: All constraint bones are automatically added to skin joint arrays
+- **Inverse bind matrices**: Identity matrices added for new constraint bones
+- **Mesh deformation**: Constraint bones can now affect vertex weights and deformation
 
 ## Output Information
 
@@ -91,13 +105,22 @@ The tool provides detailed output showing:
    Arm-related nodes: 4
 
 🔧 Adding roll and aim constraints...
+Added J_Roll_L_UpperArm to skin joints with identity matrix
+Added J_Roll_L_Elbow to skin joints with identity matrix
+Added J_Roll_L_Hand to skin joints with identity matrix
+Added J_Roll_L_LowerArm to skin joints with identity matrix
+[... and all other constraint bones]
 
 📊 Model info after adding constraints:
-   Total nodes: 131
-   Constraint nodes: 6
-   Arm-related nodes: 18
+   Total nodes: 135
+   Constraint nodes: 8
+   Arm-related nodes: 22
      🔗 J_Roll_L_UpperArm [0 children]
        → Roll: axis=X, weight=0.5, source=J_Bip_L_UpperArm
+     🔗 J_Roll_L_Elbow [0 children]
+       → Roll: axis=Y, weight=0.5, source=J_Bip_L_LowerArm
+     🔗 J_Roll_L_Hand [0 children]
+       → Roll: axis=X, weight=1.0, source=J_Bip_L_Hand
 ```
 
 ## Troubleshooting
@@ -106,14 +129,22 @@ The tool provides detailed output showing:
 Your VRM doesn't have standard Vroid bone names. Check for:
 - `J_Bip_L_UpperArm`
 - `J_Bip_L_LowerArm`
+- `J_Bip_L_Hand`
 - `J_Bip_R_UpperArm`
 - `J_Bip_R_LowerArm`
+- `J_Bip_R_Hand`
 
 ### "Model already has constraints"
 The model was already processed or has existing constraints. The tool will proceed anyway.
 
 ### Missing file errors
 Ensure your VRM file and all its assets (textures, etc.) are in the correct location.
+
+### Constraint bones added but no deformation
+If constraint bones are created but don't affect the mesh:
+- Check that bones were added to skin joints (look for "Added X to skin joints" messages)
+- Verify the model has proper skin/mesh binding
+- Ensure the VRM has mesh data that uses bone weights
 
 ## Integration
 
@@ -137,8 +168,14 @@ await document.transform(
 
 ## Files Created
 
-- `src/functions/addConstraintsToVroidVrm.ts` - Main constraint addition logic
+- `src/functions/addConstraintsToVroidVrm.ts` - Main constraint addition logic with skin integration
 - `src/processVrmWithConstraints.ts` - Command-line processing script
-- `src/addConstraintsToVroidVrm.ts` - Test and demonstration script
+- `src/tests/addConstraintsToVroidVrm.test.ts` - Test and demonstration script
+
+**Key Features:**
+- ✅ Correct bone hierarchy matching VRM specification
+- ✅ Proper constraint configuration (roll/aim axes, weights, sources)
+- ✅ Automatic skin joint integration for mesh deformation
+- ✅ Identity matrix generation for new constraint bones
 
 Run `bun run test-constraints` to see the constraint addition in action!
