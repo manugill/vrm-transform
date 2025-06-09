@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "lint": "eslint"
+    "lint": "eslint",
+    "add-constraints": "bun run src/processVrmWithConstraints.ts",
+    "test-constraints": "bun run src/addConstraintsToVroidVrm.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
