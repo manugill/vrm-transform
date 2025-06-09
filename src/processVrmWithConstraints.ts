@@ -1,6 +1,3 @@
-/* eslint-disable @stylistic/keyword-spacing */
-/* eslint-disable @stylistic/quotes */
-/* eslint-disable @stylistic/indent */
 import { NodeIO, Document, VertexLayout } from "@gltf-transform/core";
 import { ALL_EXTENSIONS } from "@gltf-transform/extensions";
 import * as fs from "fs";

@@ -1,6 +1,3 @@
-/* eslint-disable @stylistic/keyword-spacing */
-/* eslint-disable @stylistic/quotes */
-/* eslint-disable @stylistic/indent */
 import { Document, Node } from "@gltf-transform/core";
 import { VRMCNodeConstraint } from "../vrmc-node-constraint/index.js";
 import { addConstraintsToVroidVrm } from "../functions/addConstraintsToVroidVrm.js";
